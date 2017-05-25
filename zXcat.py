@@ -142,14 +142,6 @@ def find_transaction_to_address(p2sh):
             return tx
 
 
-def get_tx_details(txid):
-    # This method is problematic I haven't gotten the type conversions right
-    print(bytearray.fromhex(txid))
-    print(b2x(bytearray.fromhex(txid)))
-    fund_txinfo = zcashd.gettransaction(bytearray.fromhex(txid))
-    print(fund_txinfo)
-    
-    return fund_txinfo['details'][0]
 
 def find_secret(p2sh,fund_txid):
     zcashd.importaddress(p2sh, "", False)
@@ -171,7 +163,7 @@ def parse_secret(txid):
     raw = zcashd.getrawtransaction(lx(txid),True)['hex']
     decoded = zcashd.decoderawtransaction(raw)
     asm = decoded['vin'][0]['scriptSig']['asm'].split(" ")
-    print(asm[2])
+    return asm[2]
 
 
 # redeems automatically after buyer has funded tx, by scanning for transaction to the p2sh
